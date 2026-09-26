@@ -24,3 +24,7 @@ npm run publish-site   # static export copied to ../financore for GitHub Pages
 ```
 
 Published at `/xxd/financore/` once GitHub Pages is enabled for this branch. `.nojekyll` keeps Pages from dropping the `_next` folder.
+
+## Starter kit (`starter/`)
+
+Installs the whole stack on your own machine and creates a ready-to-design project. See [`starter/INSTALAR.md`](starter/INSTALAR.md) (Spanish).
