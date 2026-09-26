@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+/* Financore brand tokens (estilo-financore). Colors, radii and fonts come only from here. */
+@theme {
+  --color-navy: #0D2B55;
+  --color-navy-light: #1A3F78;
+  --color-navy-pale: #E8EFF9;
+  --color-blue: #1565C0;
+  --color-blue-light: #1E88E5;
+  --color-blue-pale: #E3F0FD;
+  --color-gold: #E8A020;
+  --color-gold-light: #F5BC4A;
+  --color-gold-pale: #FEF6E4;
+  --color-gray-100: #F4F6FA;
+  --color-gray-200: #E8ECF3;
+  --color-gray-400: #9BA8BB;
+  --color-gray-600: #5A6680;
+  --color-gray-800: #1E2A3A;
+  --color-red: #D32F2F;
+  --color-red-dark: #B71C1C;
+  --color-red-pale: #FDECEA;
+  --color-green: #2E7D32;
+  --color-green-pale: #E8F5E9;
+
+  --font-display: var(--font-merriweather), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  --radius-tag: 4px;
+  --radius-nav: 6px;
+  --radius-btn: 8px;
+  --radius-card: 16px;
+
+  --shadow-sm: 0 1px 3px rgba(13,43,85,0.08), 0 1px 2px rgba(13,43,85,0.04);
+  --shadow-md: 0 4px 16px rgba(13,43,85,0.10), 0 2px 6px rgba(13,43,85,0.06);
+  --shadow-lg: 0 12px 40px rgba(13,43,85,0.14);
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 68px; }
+body {
+  background: var(--color-gray-100);
+  color: var(--color-gray-800);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
