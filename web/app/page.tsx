@@ -1,73 +1,33 @@
+import { LoanSimulator } from "@/components/loan-simulator";
 import { Nav } from "@/components/nav";
+import { ProcessTimeline } from "@/components/process-timeline";
+import { ReadinessQuiz } from "@/components/readiness-quiz";
 import { Reveal } from "@/components/reveal";
+import { ServiceTabs } from "@/components/service-tabs";
+import { services } from "@/components/services-data";
 import { Container, DividerLine, H2, Section, SectionLabel } from "@/components/ui";
-import { UtilBars } from "@/components/util-bars";
+import { UtilizationMeter } from "@/components/utilization-meter";
 
-const services = [
+const tools = [
   {
-    title: "Estructuración empresarial",
-    body: "Ordenamos la base legal y financiera de tu empresa para que esté lista para operar, crecer y presentarse ante bancos e inversionistas.",
+    href: "#test",
+    title: "¿Está lista tu empresa para crédito?",
+    body: "8 preguntas, 2 minutos, resultado al instante.",
+    icon: <path d="M9 11l3 3 8-8M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2h9" />,
   },
   {
-    title: "Financiación y crédito",
-    body: "Preparamos el perfil de crédito de tu negocio y te acompañamos en la búsqueda del capital que mejor encaja con tu etapa.",
+    href: "#simulador",
+    title: "Simula tu financiación",
+    body: "Monto, plazo y tasa: mira el pago mensual.",
+    icon: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
   },
   {
-    title: "Planificación financiera (FP&A)",
-    body: "Presupuestos, proyecciones y reportes que te muestran hacia dónde va el negocio antes de tomar cada decisión.",
-  },
-  {
-    title: "Cumplimiento normativo y gestión de riesgos",
-    body: "Identificamos lo que te expone y ponemos en orden los requisitos que tu empresa debe cumplir.",
-  },
-  {
-    title: "Formación y mentoría",
-    body: "Te enseñamos a leer tus números y a tomar decisiones financieras con criterio propio.",
+    href: "#credito",
+    title: "Mide el uso de tu crédito",
+    body: "La señal que más pesa en una solicitud.",
+    icon: <path d="M12 3a9 9 0 109 9M12 12l5-5M12 3v4M21 12h-4" />,
   },
 ];
-
-const problems = [
-  "Empresas sin una estructura legal y contable clara que un banco pueda evaluar.",
-  "Historial de crédito comercial inexistente o mezclado con el crédito personal.",
-  "Solicitudes presentadas sin proyecciones ni un plan de uso del capital.",
-  "Riesgos de cumplimiento que aparecen justo cuando se revisa la solicitud.",
-];
-
-const steps = [
-  { title: "Diagnóstico inicial", body: "Revisamos la situación actual de tu empresa y lo que quieres lograr." },
-  { title: "Estructura en orden", body: "Ajustamos la base legal, contable y bancaria que hace falta." },
-  { title: "Perfil de crédito", body: "Construimos o fortalecemos el crédito comercial de tu negocio." },
-  { title: "Plan financiero", body: "Definimos presupuesto, proyecciones y el uso concreto del capital." },
-  { title: "Solicitud de financiación", body: "Te acompañamos a presentar tu empresa ante las fuentes adecuadas." },
-  { title: "Seguimiento", body: "Medimos resultados y ajustamos el plan a medida que el negocio crece." },
-];
-
-const checklist = [
-  { ok: true, text: "Empresa registrada y con cuenta bancaria comercial propia" },
-  { ok: true, text: "Estados financieros y proyecciones al día" },
-  { ok: true, text: "Uso del crédito por debajo del 30% del límite" },
-  { ok: false, text: "Mezclar gastos personales con los del negocio" },
-  { ok: false, text: "Solicitar varias líneas de crédito a la vez sin un plan" },
-];
-
-const stats = [
-  { value: "5", label: "áreas de servicio" },
-  { value: "6", label: "pasos de acompañamiento" },
-  { value: "100%", label: "atención en español" },
-];
-
-function Check({ ok }: { ok: boolean }) {
-  return (
-    <span
-      className={`mt-0.5 grid h-[22px] w-[22px] shrink-0 place-items-center rounded-full text-[11px] font-bold ${
-        ok ? "bg-green-pale text-green" : "bg-red-pale text-red-dark"
-      }`}
-      aria-label={ok ? "Recomendado" : "Evitar"}
-    >
-      {ok ? "✓" : "✕"}
-    </span>
-  );
-}
 
 export default function Home() {
   return (
@@ -78,119 +38,132 @@ export default function Home() {
         {/* HERO */}
         <header
           id="inicio"
-          className="flex min-h-screen items-center bg-[linear-gradient(155deg,#0D2B55_0%,#1565C0_55%,#1E88E5_100%)] px-6 pb-20 pt-[120px]"
+          className="flex min-h-screen items-center bg-[linear-gradient(155deg,#0D2B55_0%,#1565C0_55%,#1E88E5_100%)] px-5 pb-20 pt-[120px] md:px-6"
         >
-          <Container>
-            <Reveal>
-              <p className="mb-6 text-[11px] font-bold uppercase tracking-[2.5px] text-white/60">
-                Consultoría financiera para empresas
-              </p>
-            </Reveal>
-            <Reveal index={1}>
-              <h1 className="max-w-[18ch] font-display text-[clamp(36px,5.5vw,68px)] font-black leading-[1.15] text-white">
-                Capital inteligente para que tu empresa <em className="text-gold-light">crezca con estrategia</em>.
-              </h1>
-            </Reveal>
+          <Container className="grid items-center gap-12 lg:grid-cols-[1.25fr_1fr]">
+            <div>
+              <Reveal>
+                <p className="mb-6 text-[11px] font-bold uppercase tracking-[2.5px] text-white/60">
+                  Consultoría financiera para empresas
+                </p>
+              </Reveal>
+              <Reveal index={1}>
+                <h1 className="max-w-[16ch] font-display text-[clamp(36px,5.5vw,64px)] font-black leading-[1.15] text-white">
+                  Descubre qué necesita tu empresa para <em className="text-gold-light">acceder a capital</em>.
+                </h1>
+              </Reveal>
+              <Reveal index={2}>
+                <p className="mt-6 max-w-[50ch] text-lg font-light leading-[1.6] text-white/[0.78]">
+                  Usa nuestras herramientas gratuitas para medir dónde está tu negocio hoy. Después, te acompañamos a
+                  estructurarlo, preparar tu crédito y planificar cada paso.
+                </p>
+              </Reveal>
+              <Reveal index={3}>
+                <div className="mt-10 flex flex-wrap gap-3">
+                  <a
+                    href="#test"
+                    className="rounded-btn bg-gold px-[34px] py-[15px] text-[15px] font-bold leading-tight text-navy transition-transform duration-[250ms] hover:-translate-y-0.5"
+                  >
+                    Hacer el test gratis
+                  </a>
+                  <a
+                    href="#contacto"
+                    className="rounded-btn border-2 border-white/35 px-8 py-[13px] text-[15px] font-bold leading-tight text-white transition-colors duration-[250ms] hover:bg-white/10"
+                  >
+                    Hablar con un asesor
+                  </a>
+                </div>
+              </Reveal>
+            </div>
+
             <Reveal index={2}>
-              <p className="mt-6 max-w-[56ch] text-lg font-light leading-[1.6] text-white/[0.78]">
-                Estructuramos tu negocio, preparamos tu crédito y planificamos tus finanzas para que puedas acceder al
-                capital que necesitas. Con acompañamiento real, de principio a fin.
-              </p>
-            </Reveal>
-            <Reveal index={3}>
-              <div className="mt-10 flex flex-wrap gap-3">
-                <a
-                  href="#contacto"
-                  className="rounded-btn bg-gold px-[34px] py-[15px] text-[15px] font-bold leading-tight text-navy transition-transform duration-[250ms] hover:-translate-y-0.5"
-                >
-                  Agenda una consulta
-                </a>
-                <a
-                  href="#servicios"
-                  className="rounded-btn border-2 border-white/35 px-8 py-[13px] text-[15px] font-bold leading-tight text-white transition-colors duration-[250ms] hover:bg-white/10"
-                >
-                  Ver servicios
-                </a>
-              </div>
-            </Reveal>
-            <Reveal index={4}>
-              <dl className="mt-16 flex flex-wrap gap-x-12 gap-y-6">
-                {stats.map((s) => (
-                  <div key={s.label}>
-                    <dt className="sr-only">{s.label}</dt>
-                    <dd className="font-display text-4xl font-black leading-none text-gold-light">{s.value}</dd>
-                    <dd className="mt-2 text-sm text-white/60">{s.label}</dd>
-                  </div>
+              <ul className="space-y-3" aria-label="Herramientas">
+                {tools.map((t) => (
+                  <li key={t.href}>
+                    <a
+                      href={t.href}
+                      className="group flex items-center gap-4 rounded-card border border-white/15 bg-white/[0.08] p-5 text-white backdrop-blur-sm transition-[background-color,transform,border-color] duration-[250ms] hover:-translate-y-1 hover:border-white/35 hover:bg-white/[0.14]"
+                    >
+                      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-btn bg-white text-blue">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                          {t.icon}
+                        </svg>
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-bold leading-snug">{t.title}</span>
+                        <span className="mt-0.5 block text-sm text-white/[0.78]">{t.body}</span>
+                      </span>
+                      <span className="text-xl text-white/60 transition-transform duration-[250ms] group-hover:translate-x-1" aria-hidden>
+                        →
+                      </span>
+                    </a>
+                  </li>
                 ))}
-              </dl>
+              </ul>
             </Reveal>
           </Container>
         </header>
 
-        {/* PROBLEMA */}
-        <Section className="bg-white">
-          <div className="grid gap-12 md:grid-cols-[1fr_1.1fr] md:items-center">
+        {/* TEST */}
+        <Section id="test" className="scroll-mt-[68px] bg-white">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.35fr] lg:items-start">
             <Reveal>
-              <SectionLabel>El problema</SectionLabel>
-              <H2>Por qué tantas empresas no consiguen financiación.</H2>
+              <SectionLabel>Test de preparación</SectionLabel>
+              <H2>¿Tu empresa está lista para pedir crédito?</H2>
               <DividerLine />
               <p className="text-[17px] text-gray-600">
-                Casi nunca es por falta de potencial. Es porque el negocio llega a la solicitud sin la preparación que el
-                prestamista necesita ver.
+                Muchas solicitudes se rechazan no por falta de potencial, sino porque el negocio llega sin la preparación
+                que el prestamista necesita ver. Responde con sinceridad: el resultado te dice qué resolver primero.
               </p>
             </Reveal>
             <Reveal index={1}>
-              <div className="rounded-[12px] border border-l-4 border-red/15 border-l-red bg-red-pale px-5 py-6 md:px-11 md:py-9">
-                <p className="mb-4 font-bold text-red-dark">Los motivos más comunes de rechazo</p>
-                <ul className="space-y-3">
-                  {problems.map((p) => (
-                    <li key={p} className="flex gap-3 text-gray-800">
-                      <Check ok={false} />
-                      <span>{p}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <ReadinessQuiz />
             </Reveal>
           </div>
+        </Section>
+
+        {/* SIMULADOR */}
+        <Section id="simulador" className="scroll-mt-[68px]">
+          <Reveal className="max-w-[640px]">
+            <SectionLabel>Simulador</SectionLabel>
+            <H2>Mira cuánto pagarías antes de solicitar.</H2>
+            <DividerLine />
+            <p className="mb-10 text-[17px] text-gray-600">
+              Mueve los controles para comparar escenarios. Entender el costo total te ayuda a pedir el monto y el plazo
+              correctos.
+            </p>
+          </Reveal>
+          <Reveal index={1}>
+            <LoanSimulator />
+          </Reveal>
         </Section>
 
         {/* SERVICIOS */}
-        <Section id="servicios">
+        <Section id="servicios" className="scroll-mt-[68px] bg-white">
           <Reveal className="max-w-[640px]">
             <SectionLabel>Servicios</SectionLabel>
-            <H2>Todo lo que tu empresa necesita para acceder a capital.</H2>
+            <H2>Cinco áreas, un solo acompañamiento.</H2>
             <DividerLine />
           </Reveal>
-          <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))] gap-5">
-            {services.map((s, i) => (
-              <Reveal key={s.title} index={i}>
-                <article className="group relative h-full overflow-hidden rounded-card border border-gray-200 bg-white px-5 py-6 transition-[border-color,transform,box-shadow] duration-[250ms] before:absolute before:inset-x-0 before:top-0 before:h-[3px] before:bg-gradient-to-r before:from-blue before:to-blue-light before:opacity-0 before:transition-opacity before:duration-[250ms] hover:-translate-y-1 hover:border-blue-light hover:shadow-md hover:before:opacity-100 md:px-7 md:py-8">
-                  <span className="font-display text-5xl font-black leading-none text-blue-pale" aria-hidden>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="mt-4 font-display text-2xl font-bold leading-[1.3] text-navy">{s.title}</h3>
-                  <p className="mt-3 text-sm leading-[1.6] text-gray-600">{s.body}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal index={1}>
+            <ServiceTabs />
+          </Reveal>
         </Section>
 
-        {/* VISUAL DE DATOS */}
-        <Section id="credito" className="bg-white">
-          <div className="grid gap-12 md:grid-cols-[1fr_1.2fr] md:items-center">
+        {/* CREDITO */}
+        <Section id="credito" className="scroll-mt-[68px]">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
             <Reveal>
-              <SectionLabel>Crédito</SectionLabel>
-              <H2>Cómo leen los prestamistas el uso de tu crédito.</H2>
+              <SectionLabel>Uso del crédito</SectionLabel>
+              <H2>La señal que más pesa en tu solicitud.</H2>
               <DividerLine />
               <p className="text-[17px] text-gray-600">
-                Una de las señales que más pesa es qué parte de tu límite disponible estás usando. Mantenerla por debajo
-                del 30% es una referencia común para mostrar un manejo sano.
+                Los prestamistas miran qué parte de tu límite disponible estás usando. Mantenerla por debajo del 30% es
+                una referencia común de manejo sano. Prueba con tus propios números.
               </p>
             </Reveal>
             <Reveal index={1}>
-              <UtilBars />
+              <UtilizationMeter />
             </Reveal>
           </div>
         </Section>
@@ -205,46 +178,22 @@ export default function Home() {
         </section>
 
         {/* PROCESO */}
-        <Section id="proceso" className="bg-white">
-          <Reveal className="max-w-[640px]">
-            <SectionLabel>Cómo trabajamos</SectionLabel>
-            <H2>Seis pasos, de la primera conversación al capital.</H2>
-            <DividerLine />
-          </Reveal>
-          <div className="mt-6 grid gap-12 md:grid-cols-[1.2fr_1fr]">
-            <ol className="relative pl-9 before:absolute before:bottom-2 before:left-[15px] before:top-2 before:w-0.5 before:bg-gradient-to-b before:from-blue before:via-blue-light before:to-transparent md:pl-12">
-              {steps.map((s, i) => (
-                <li key={s.title} className="relative pb-8 last:pb-0">
-                  <Reveal index={i}>
-                    <span
-                      className="absolute -left-[29px] top-[5px] h-4 w-4 rounded-full border-[3px] border-white bg-blue shadow-[0_0_0_2px_#1E88E5] md:-left-[41px]"
-                      aria-hidden
-                    />
-                    <p className="text-xs font-bold uppercase tracking-[2px] text-blue">Paso {i + 1}</p>
-                    <h3 className="mt-1 font-display text-2xl font-bold leading-[1.3] text-navy">{s.title}</h3>
-                    <p className="mt-1 text-gray-600">{s.body}</p>
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
-            <Reveal index={1}>
-              <div className="rounded-card border border-gray-200 bg-gray-100 px-5 py-6 md:sticky md:top-24 md:px-8 md:py-8">
-                <h3 className="font-display text-2xl font-bold leading-[1.3] text-navy">¿Tu empresa está lista para pedir crédito?</h3>
-                <ul className="mt-6 space-y-4">
-                  {checklist.map((c) => (
-                    <li key={c.text} className="flex gap-3">
-                      <Check ok={c.ok} />
-                      <span className="text-gray-800">{c.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        <Section id="proceso" className="scroll-mt-[68px] bg-white">
+          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
+            <Reveal className="lg:sticky lg:top-28 lg:self-start">
+              <SectionLabel>Cómo trabajamos</SectionLabel>
+              <H2>Seis pasos, de la primera conversación al capital.</H2>
+              <DividerLine />
+              <p className="text-[17px] text-gray-600">
+                Cada empresa empieza en un punto distinto. El diagnóstico define por cuál paso comenzamos contigo.
+              </p>
             </Reveal>
+            <ProcessTimeline />
           </div>
         </Section>
 
         {/* CTA FINAL */}
-        <section id="contacto" className="border-t border-gold/20 bg-gold-pale px-5 py-14 text-center md:px-6 md:py-[88px]">
+        <section id="contacto" className="scroll-mt-[68px] border-t border-gold/20 bg-gold-pale px-5 py-14 text-center md:px-6 md:py-[88px]">
           <Reveal className="mx-auto max-w-[640px]">
             <H2>¿Listo para ordenar las finanzas de tu empresa?</H2>
             <p className="mx-auto mt-4 text-[17px] text-gray-600">
@@ -292,7 +241,7 @@ export default function Home() {
             <h4 className="mb-4 text-xs font-bold uppercase tracking-[2px] text-gold-light">Servicios</h4>
             <ul className="space-y-2 text-sm">
               {services.map((s) => (
-                <li key={s.title}><a className="hover:text-gold-light" href="#servicios">{s.title}</a></li>
+                <li key={s.id}><a className="hover:text-gold-light" href={`#servicio-${s.id}`}>{s.title}</a></li>
               ))}
             </ul>
           </div>

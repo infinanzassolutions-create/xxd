@@ -4,8 +4,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 const links = [
+  { href: "#test", label: "Test" },
+  { href: "#simulador", label: "Simulador" },
   { href: "#servicios", label: "Servicios" },
-  { href: "#credito", label: "Crédito" },
   { href: "#proceso", label: "Cómo trabajamos" },
   { href: "#contacto", label: "Contacto" },
 ];

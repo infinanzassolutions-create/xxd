@@ -49,3 +49,29 @@ body {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* Range slider: blue fill up to the thumb, 44px tall hit area. */
+.fc-range {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 44px; background: transparent; cursor: pointer;
+}
+.fc-range::-webkit-slider-runnable-track {
+  height: 8px; border-radius: 100px;
+  background: linear-gradient(to right, var(--color-blue) var(--fill), var(--color-gray-200) var(--fill));
+}
+.fc-range::-moz-range-track { height: 8px; border-radius: 100px; background: var(--color-gray-200); }
+.fc-range::-moz-range-progress { height: 8px; border-radius: 100px; background: var(--color-blue); }
+.fc-range::-webkit-slider-thumb {
+  -webkit-appearance: none; margin-top: -8px;
+  width: 24px; height: 24px; border-radius: 100px;
+  background: #fff; border: 3px solid var(--color-blue); box-shadow: var(--shadow-md);
+  transition: transform .25s;
+}
+.fc-range::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 100px;
+  background: #fff; border: 3px solid var(--color-blue); box-shadow: var(--shadow-md);
+}
+.fc-range:active::-webkit-slider-thumb { transform: scale(1.15); }
+.fc-range:focus-visible { outline: none; }
+.fc-range:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--color-blue); outline-offset: 2px; }
+.fc-range:focus-visible::-moz-range-thumb { outline: 2px solid var(--color-blue); outline-offset: 2px; }
