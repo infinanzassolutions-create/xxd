@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code Website Setup</title>
+<meta name="description" content="The 4-step setup that takes you from a blank terminal to a polished, production-ready website, with Claude Code as your developer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f3ee;
+  --surface: #fffdf9;
+  --surface-2: #efeae2;
+  --text: #1c1a17;
+  --text-muted: #5f5950;
+  --border: #ddd6cb;
+  --accent: #c2410c;
+  --accent-ink: #ffffff;
+
+  --text-xs: .75rem; --text-sm: .875rem; --text-base: 1rem; --text-lg: 1.25rem;
+  --text-xl: 1.75rem; --text-2xl: 2.5rem; --text-3xl: clamp(2.75rem, 7vw, 5.5rem);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius: 16px;
+  --section: 96px;
+  --gutter: 24px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141311; --surface: #1c1a17; --surface-2: #26231f;
+    --text: #f2ede5; --text-muted: #a8a095; --border: #36322c;
+    --accent: #fb923c; --accent-ink: #1c1a17;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141311; --surface: #1c1a17; --surface-2: #26231f;
+  --text: #f2ede5; --text-muted: #a8a095; --border: #36322c;
+  --accent: #fb923c; --accent-ink: #1c1a17;
+}
+@media (max-width: 720px) { :root { --section: 64px; --gutter: 16px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 var(--text-base)/1.6 var(--font-text);
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter); }
+.eyebrow { font: 500 var(--text-xs)/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -.02em; line-height: 1.1; margin: 0; }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-lg); line-height: 1.3; }
+p { margin: 0 0 16px; }
+.muted { color: var(--text-muted); }
+code { font-family: var(--font-mono); font-size: .9em; background: var(--surface-2); padding: 2px 6px; border-radius: 6px; }
+
+/* Nav */
+.nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+.brand { font: 600 var(--text-base)/1 var(--font-display); text-decoration: none; }
+.nav ul { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; font-size: var(--text-sm); }
+.nav ul a { text-decoration: none; color: var(--text-muted); transition: color .15s; }
+.nav ul a:hover { color: var(--text); }
+.theme-btn { background: none; border: 1px solid var(--border); color: var(--text); border-radius: 999px; min-height: 36px; padding: 0 14px; font: 500 var(--text-xs) var(--font-mono); cursor: pointer; }
+@media (max-width: 720px) { .nav ul { display: none; } }
+
+/* Hero */
+.hero { padding: 128px 0 var(--section); border-bottom: 1px solid var(--border); }
+.hero h1 { font-size: var(--text-3xl); max-width: 14ch; }
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero .lead { font-size: var(--text-lg); color: var(--text-muted); max-width: 52ch; margin: 32px 0 40px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 24px; border-radius: 999px; font-weight: 500; text-decoration: none; transition: transform .18s ease-out, background .18s; border: 1px solid transparent; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-secondary { border-color: var(--border); }
+.btn-secondary:hover { background: var(--surface-2); }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 32px; margin-top: 64px; font: 400 var(--text-sm) var(--font-mono); color: var(--text-muted); }
+.hero-meta strong { display: block; font: 600 var(--text-xl) var(--font-display); color: var(--text); }
+
+section { padding: var(--section) 0; }
+.section-head { display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; align-items: end; margin-bottom: 64px; }
+.section-head p { font-size: var(--text-lg); color: var(--text-muted); margin: 0; }
+@media (max-width: 860px) { .section-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 48px; } }
+
+/* Steps */
+.step { display: grid; grid-template-columns: 120px 1fr; gap: 32px; padding: 48px 0; border-top: 1px solid var(--border); }
+.step-num { font: 500 var(--text-3xl)/1 var(--font-display); color: var(--accent); }
+.step h3 { font-size: var(--text-xl); margin-bottom: 16px; }
+.step-body { max-width: 720px; min-width: 0; }
+.step-body > p { color: var(--text-muted); }
+.step ol, .step ul { padding-left: 20px; margin: 0 0 16px; color: var(--text-muted); }
+.step li { margin-bottom: 8px; }
+@media (max-width: 720px) { .step { grid-template-columns: 1fr; gap: 12px; } .step-num { font-size: var(--text-2xl); } }
+
+.why { border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin-top: 24px; }
+.why strong { color: var(--text); }
+.note { background: var(--surface-2); border-radius: 12px; padding: 16px 20px; font-size: var(--text-sm); color: var(--text-muted); margin: 16px 0; }
+.note strong { color: var(--text); }
+blockquote { margin: 16px 0; padding: 20px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-style: italic; }
+
+/* Code */
+.code { position: relative; margin: 16px 0; }
+.code pre { margin: 0; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px 96px 16px 20px; overflow-x: auto; font: 400 var(--text-sm)/1.7 var(--font-mono); }
+.code pre.tall { padding-right: 20px; padding-top: 56px; white-space: pre-wrap; }
+.copy { position: absolute; top: 10px; right: 10px; min-height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font: 500 var(--text-xs) var(--font-mono); cursor: pointer; transition: background .15s; }
+.copy:hover { background: var(--bg); }
+
+/* Tables */
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); min-width: 520px; }
+th, td { text-align: left; padding: 16px 24px; border-bottom: 1px solid var(--border); }
+th { font: 500 var(--text-xs) var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; }
+tr.highlight td { background: color-mix(in srgb, var(--accent) 10%, transparent); font-weight: 600; }
+
+/* Stack grid */
+.stack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.layer { background: var(--surface); padding: 32px 24px; transition: background .2s; }
+.layer:hover { background: var(--surface-2); }
+.layer .eyebrow { color: var(--text-muted); }
+.layer h3 { margin-bottom: 8px; }
+.layer p { color: var(--text-muted); font-size: var(--text-sm); margin: 0; }
+@media (max-width: 860px) { .stack { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .stack { grid-template-columns: 1fr; } }
+
+/* Mistakes */
+.mistakes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.mistake { border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; background: var(--surface); }
+.mistake h3 { margin-bottom: 8px; }
+.mistake p { color: var(--text-muted); margin: 0; }
+@media (max-width: 720px) { .mistakes { grid-template-columns: 1fr; } .mistake { padding: 24px; } }
+
+/* Next steps */
+.next { background: var(--text); color: var(--bg); border-radius: 24px; padding: 64px; }
+.next h2 { max-width: 16ch; }
+.next ol { list-style: none; padding: 0; margin: 48px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; counter-reset: n; }
+.next li { counter-increment: n; border-top: 1px solid color-mix(in srgb, var(--bg) 25%, transparent); padding-top: 16px; }
+.next li::before { content: "0" counter(n); display: block; font: 500 var(--text-xs) var(--font-mono); opacity: .6; margin-bottom: 8px; }
+.next .tag { margin-top: 48px; opacity: .7; font-size: var(--text-sm); }
+@media (max-width: 860px) { .next { padding: 40px 24px; } .next ol { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .next ol { grid-template-columns: 1fr; } }
+
+footer { padding: 48px 0; border-top: 1px solid var(--border); font-size: var(--text-sm); color: var(--text-muted); }
+
+/* Motion */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease-out, transform .6s ease-out; transition-delay: calc(var(--i, 0) * 75ms); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .btn, .layer { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top">The Stack</a>
+    <ul>
+      <li><a href="#steps">Setup</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#prompt">Starter prompt</a></li>
+      <li><a href="#mistakes">Mistakes</a></li>
+    </ul>
+    <button class="theme-btn" id="theme" type="button" aria-label="Toggle color theme">Theme</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow reveal">Free setup guide</p>
+    <h1 class="reveal" style="--i:1">Build a <em>$10K</em> website in Claude Code.</h1>
+    <p class="lead reveal" style="--i:2">The 4-step setup that takes you from a blank terminal to a polished, production-ready site, with Claude Code as your developer.</p>
+    <div class="actions reveal" style="--i:3">
+      <a class="btn btn-primary" href="#steps">Start the setup</a>
+      <a class="btn btn-secondary" href="#prompt">Copy the starter prompt</a>
+    </div>
+    <div class="hero-meta reveal" style="--i:4">
+      <div><strong>4 steps</strong>from install to first build</div>
+      <div><strong>$20/mo</strong>Claude Pro plan</div>
+      <div><strong>1–3 days</strong>to a finished site</div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap section-head">
+    <div>
+      <p class="eyebrow reveal">Why this works</p>
+      <h2 class="reveal" style="--i:1">Set up the environment before you write a prompt.</h2>
+    </div>
+    <p class="reveal" style="--i:2">You don't need a designer or a dev team. Claude Code is only as good as the environment, animation library, design rules, and components it can work with. This stack turns it from a generic code generator into something closer to a senior web designer.</p>
+  </div>
+</section>
+
+<section id="steps" style="padding-top:0">
+  <div class="wrap">
+
+    <article class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <p class="eyebrow">Step 1</p>
+        <h3>Install Claude Code</h3>
+        <p>Claude Code runs on your machine, in your terminal. The native installer is the recommended route:</p>
+        <div class="code"><pre>curl -fsSL https://claude.ai/install.sh | bash</pre><button class="copy" type="button">Copy</button></div>
+        <p>Or install it with npm (requires Node.js 18+):</p>
+        <div class="code"><pre>npm install -g @anthropic-ai/claude-code</pre><button class="copy" type="button">Copy</button></div>
+        <p>Then start it from your project folder and sign in with your Claude account when prompted:</p>
+        <div class="code"><pre>claude</pre><button class="copy" type="button">Copy</button></div>
+        <p class="why muted"><strong>Why it matters:</strong> Claude Code reads your whole project, edits several files at once, runs commands, and iterates on the result. Copying code out of a chat window can't do that.</p>
+      </div>
+    </article>
+
+    <article class="step reveal">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <p class="eyebrow">Step 2</p>
+        <h3>Add animation support with Motion</h3>
+        <p>Default AI-generated sites look static. Motion is the biggest single upgrade toward a site that feels premium. Install it inside your React or Next.js project:</p>
+        <div class="code"><pre>npm install motion</pre><button class="copy" type="button">Copy</button></div>
+        <div class="note"><strong>Note:</strong> Framer Motion is now published as <code>motion</code>. Import it from <code>motion/react</code>. The old <code>framer-motion</code> package still works if your project already uses it.</div>
+        <p>Then add this to your project's <code>CLAUDE.md</code> so it applies to every session:</p>
+        <blockquote>"Use Motion (motion/react) for all animations. Apply scroll-triggered fades, staggered reveals, and smooth hover transitions on interactive elements. Respect prefers-reduced-motion."</blockquote>
+        <p class="why muted"><strong>What changes:</strong> hero sections gain movement, cards slide in on scroll, and buttons respond to hover. This is a large part of what separates an "AI website" from an agency website.</p>
+      </div>
+    </article>
+
+    <article class="step reveal">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <p class="eyebrow">Step 3</p>
+        <h3>Add a design-focused skill</h3>
+        <p>Skills are reusable instruction sets that Claude Code loads when a task calls for them. A frontend design skill gives Claude taste: spacing, hierarchy, typography, color, and layout rules.</p>
+        <ol>
+          <li>Create a folder for the skill: <code>.claude/skills/frontend-design/</code></li>
+          <li>Add a <code>SKILL.md</code> inside it with a <code>name</code> and <code>description</code> in the frontmatter, followed by your design rules</li>
+          <li>Claude Code uses the description to decide when to load it. You can also call it by name with <code>/frontend-design</code></li>
+        </ol>
+        <div class="code"><pre class="tall">---
+name: frontend-design
+description: Design system and taste rules. Use when building any UI.
+---
+
+# Frontend design rules
+- Type scale: 12 / 14 / 16 / 20 / 28 / 40 / hero clamp
+- Spacing: 8px grid (4, 8, 16, 24, 32, 48, 64, 96)
+- Colors: tokens only (bg, surface, text, muted, accent)
+- Buttons: hover, focus-visible, active, disabled states
+- Avoid the generic AI look: no purple gradients, no emoji icons</pre><button class="copy" type="button">Copy</button></div>
+        <p>What to include:</p>
+        <ul>
+          <li>A typography scale: a real type system instead of random font sizes</li>
+          <li>A spacing system on an 8px base grid</li>
+          <li>Color tokens (primary, neutral, accent) instead of loose hex codes</li>
+          <li>Component patterns: button states, card structure, form layouts</li>
+          <li>Explicit "avoid the generic AI aesthetic" rules</li>
+        </ul>
+        <p class="why muted"><strong>Why it matters:</strong> without a design skill, Claude Code falls back on generic Tailwind patterns. With one, every component follows the same design system, which is the part agencies charge $10K to build.</p>
+      </div>
+    </article>
+
+    <article class="step reveal">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <p class="eyebrow">Step 4</p>
+        <h3>Integrate a component library (21st.dev)</h3>
+        <p>21st.dev is a library of production-ready components you can drop into a React project.</p>
+        <ol>
+          <li>Visit <a href="https://21st.dev" target="_blank" rel="noopener">21st.dev</a></li>
+          <li>Browse components: heroes, pricing tables, testimonials, navbars, footers</li>
+          <li>Copy the component code, or use the install command shown on the component page</li>
+          <li>Paste it into your project and ask Claude Code to integrate it</li>
+        </ol>
+        <p>Prompt to use:</p>
+        <blockquote>"Integrate this 21st.dev component into our landing page. Match it to our design tokens, replace the placeholder content with our copy, and add Motion entrance animations."</blockquote>
+        <p class="why muted"><strong>Why it matters:</strong> the components are already designed by professionals, and Claude Code adapts them to your brand. You skip most of the design work and still end up with a site that looks expensive.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow reveal">The full stack</p>
+        <h2 class="reveal" style="--i:1">Four layers, one workflow.</h2>
+      </div>
+      <p class="reveal" style="--i:2">Each layer covers a gap the others leave. Together they cover code, motion, taste, and components.</p>
+    </div>
+    <div class="stack">
+      <div class="layer reveal"><p class="eyebrow">Code generation</p><h3>Claude Code</h3><p>Builds and edits your site locally.</p></div>
+      <div class="layer reveal" style="--i:1"><p class="eyebrow">Animation</p><h3>Motion</h3><p>Adds polish and movement.</p></div>
+      <div class="layer reveal" style="--i:2"><p class="eyebrow">Design system</p><h3>Frontend design skill</h3><p>Teaches Claude design taste.</p></div>
+      <div class="layer reveal" style="--i:3"><p class="eyebrow">Components</p><h3>21st.dev</h3><p>Production-ready UI blocks.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prompt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow reveal">Starter prompt</p>
+        <h2 class="reveal" style="--i:1">Paste this once all four layers are in place.</h2>
+      </div>
+      <p class="reveal" style="--i:2">Replace the bracketed part with your product or service. The last line matters: reviewing section by section is where the quality comes from.</p>
+    </div>
+    <div class="code reveal"><pre class="tall" id="starter">Build a modern landing page for [YOUR PRODUCT/SERVICE].
+
+Requirements:
+- Use the latest Next.js with the App Router
+- Tailwind CSS for styling
+- Motion (motion/react) for all animations: scroll reveals, hover states, page transitions
+- Pull hero, features, and pricing sections from 21st.dev components
+- Follow the design tokens defined in our frontend-design skill
+- Add a sticky navbar, a hero with a headline and CTA, 3 feature cards, a social proof section, pricing, FAQ, and footer
+- Mobile-first, fully responsive
+- Lighthouse performance score of 90+
+
+Start by setting up the project structure, then build section by section. Show me each section before moving to the next.</pre><button class="copy" type="button">Copy prompt</button></div>
+  </div>
+</section>
+
+<section id="mistakes">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow reveal">Common mistakes</p>
+        <h2 class="reveal" style="--i:1">What sinks most first attempts.</h2>
+      </div>
+    </div>
+    <div class="mistakes">
+      <div class="mistake reveal"><h3>Skipping the design skill</h3><p>Without it you get a generic site that looks AI-generated.</p></div>
+      <div class="mistake reveal" style="--i:1"><h3>Vague prompts</h3><p>Be specific about sections, animations, and content. Claude Code is only as good as your brief.</p></div>
+      <div class="mistake reveal" style="--i:2"><h3>Not iterating</h3><p>The first output is rarely the final one. Ask Claude Code to refine spacing, contrast, and motion.</p></div>
+      <div class="mistake reveal" style="--i:3"><h3>Forgetting performance</h3><p>Ask for lazy-loaded images, optimized fonts, and a Lighthouse audit at the end.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow reveal">What you just saved</p>
+        <h2 class="reveal" style="--i:1">The math.</h2>
+      </div>
+      <p class="reveal" style="--i:2">Typical market ranges. Your own time still counts: plan on reviewing and directing every section.</p>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th>Route</th><th>Cost</th><th>Time</th></tr></thead>
+        <tbody>
+          <tr><td>Hire a web designer</td><td>$5K–$15K</td><td>4–8 weeks</td></tr>
+          <tr><td>Hire an agency</td><td>$10K–$30K</td><td>6–12 weeks</td></tr>
+          <tr class="highlight"><td>Claude Code + this stack</td><td>From $20/month</td><td>1–3 days</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="next reveal">
+      <p class="eyebrow">Next steps</p>
+      <h2>Build your first site this week.</h2>
+      <ol>
+        <li>Install Claude Code today</li>
+        <li>Set up Motion and a frontend design skill in your starter template</li>
+        <li>Bookmark 21st.dev</li>
+        <li>Build your first site this week</li>
+      </ol>
+      <p class="tag">That's the whole stack. No upsell.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Free setup guide. Claude Code is a product of Anthropic; Motion and 21st.dev are independent projects.</div>
+</footer>
+
+<script>
+(function () {
+  // Theme toggle (remembered per browser when storage is available)
+  var root = document.documentElement;
+  try { var saved = localStorage.getItem("theme"); if (saved) root.dataset.theme = saved; } catch (e) {}
+  document.getElementById("theme").addEventListener("click", function () {
+    var dark = root.dataset.theme
+      ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+  });
+
+  // Copy buttons
+  document.querySelectorAll(".copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.previousElementSibling.textContent;
+      var label = btn.textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = "Copied";
+        setTimeout(function () { btn.textContent = label; }, 1500);
+      });
+    });
+  });
+
+  // Scroll reveals
+  var items = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) {
+    items.forEach(function (el) { el.classList.add("in"); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) { entry.target.classList.add("in"); io.unobserve(entry.target); }
+    });
+  }, { rootMargin: "0px 0px -10% 0px" });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
